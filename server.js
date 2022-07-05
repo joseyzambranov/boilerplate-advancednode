@@ -15,6 +15,15 @@ app.use('/public', express.static(process.cwd() + '/public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave:true,
+  saveUninitialized:true,
+  cookie:{secure:false}
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 myDB(async client=>{
   const myDataBase = await client.db('database').collection('users');
@@ -34,7 +43,7 @@ passport.serializeUser((user,done)=>{
 
 passport.deserializeUser((user,done)=>{
   myDataBase.findOne({_id:new ObjectID(id)},(err,doc)=>{
-    done(doc)
+    done(null,doc)
   })
 })
 
@@ -46,17 +55,6 @@ passport.deserializeUser((user,done)=>{
     })
   })
 })
-
-
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave:true,
-  saveUninitialized:true,
-  cookie:{secure:false}
-}));
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
