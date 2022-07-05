@@ -27,6 +27,17 @@ app.route('/').get((req, res) => {
     message:"Please login"
   });
 });
+
+passport.serializeUser((user,done)=>{
+  done(null,user._id)
+})
+
+passport.deserializeUser((user,done)=>{
+  myDataBase.findOne({_id:new ObjectID(id)},(err,doc)=>{
+    done(doc)
+  })
+})
+
 }).catch(e=>{
   app.route('/').get((req,res)=>{
     res.render('pug',{
@@ -43,16 +54,6 @@ app.use(session({
   saveUninitialized:true,
   cookie:{secure:false}
 }));
-
-passport.serializeUser((user,done)=>{
-  done(null,user._id)
-})
-
-passport.deserializeUser((user,done)=>{
-  myDataBase.findOne({_id:new ObjectID(id)},(err,doc)=>{
-    done(doc)
-  })
-})
 
 app.use(passport.initialize());
 app.use(passport.session());
