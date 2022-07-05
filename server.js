@@ -30,10 +30,10 @@ passport.serializeUser((user,done)=>{
 })
 
 passport.deserializeUser((user,done)=>{
-  //myDB.findOne({_id:new ObjectID(id)},(err,doc)=>{
+  myDB.findOne({_id:new ObjectID(id)},(err,doc)=>{
     done(null,null)
   })
-//})
+})
 
 app.use(passport.initialize());
 app.use(passport.session());
