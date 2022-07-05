@@ -31,7 +31,7 @@ passport.serializeUser((user,done)=>{
 
 passport.deserializeUser((user,done)=>{
   myDB.findOne({_id:new ObjectID(id)},(err,doc)=>{
-    done(null,null)
+    done(null,user._id)
   })
 })
 
