@@ -25,6 +25,16 @@ app.use(session({
   cookie:{secure:false}
 }));
 
+passport.serializeUser((user,done)=>{
+  done(null,user._id)
+})
+
+passport.deserializeUser((user,done)=>{
+  //myDB.findOne({_id:new ObjectID(id)},(err,doc)=>{
+    done(null,null)
+  })
+//})
+
 app.use(passport.initialize());
 app.use(passport.session());
 
