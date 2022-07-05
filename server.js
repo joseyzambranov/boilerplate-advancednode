@@ -16,9 +16,26 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
+myDB(async client=>{
+  const myDataBase = await client.db('database').collection('users');
+
+
+
 app.route('/').get((req, res) => {
-  res.render(process.cwd() + '/views/pug/index', {title:'Hello',message:"Please login"});
+  res.render('pug',{
+    title:'Connected to Database',
+    message:"Please login"
+  });
 });
+}).catch(e=>{
+  app.route('/').get((req,res)=>{
+    res.render('pug',{
+      title:e,
+      message:"Unable login"
+    })
+  })
+})
+
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
@@ -32,10 +49,10 @@ passport.serializeUser((user,done)=>{
 })
 
 passport.deserializeUser((user,done)=>{
-  //myDB.findOne({_id:new ObjectID(id)},(err,doc)=>{
-    done(null,null)
+  myDataBase.findOne({_id:new ObjectID(id)},(err,doc)=>{
+    done(doc)
   })
-//})
+})
 
 app.use(passport.initialize());
 app.use(passport.session());
