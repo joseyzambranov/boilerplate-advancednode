@@ -7,6 +7,7 @@ const myDB = require('./connection');
 const fccTesting = require('./freeCodeCamp/fcctesting.js');
 const ObjectID = require('mongodb').ObjectID;
 const LocalStrategy = require('passport-local');
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
@@ -85,7 +86,6 @@ function ensureAuthenticated(req,res,next){
   res.redirect("/")
 }
 
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log('Listening on port ' + PORT);
 });
