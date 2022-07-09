@@ -41,9 +41,9 @@ app.route("/login").post(passport.authenticate("local",{failureRedirect:"/"}),(r
   res.redirect("/profile")
   })
 
-app.route("/profile").get((req,res)=>{
+app.route("/profile").get(ensureAuthenticated,(req,res)=>{
   res.render(process.cwd()+"/views/pug/profile")
-})  
+}) 
 
 passport.serializeUser((user,done)=>{
   done(null,user._id)
@@ -67,6 +67,8 @@ passport.use(new LocalStrategy(
   }
 ))
 
+
+
 }).catch((e)=>{
   app.route('/').get((req,res)=>{
     res.render('pug',{
@@ -75,6 +77,13 @@ passport.use(new LocalStrategy(
     })
   })
 })
+
+function ensureAuthenticated(req,res,next){
+  if(req.isAuthenticated()){
+    return next()
+  }
+  res.redirect("/")
+}
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
