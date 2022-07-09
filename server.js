@@ -55,7 +55,7 @@ passport.deserializeUser((id,done)=>{
   })
 })
 
-passport.user(new LocalStrategy(
+passport.use(new LocalStrategy(
   function(username,password,done){
     myDataBase.findOne({username:username},function(err,user){
       console.log('User'+ username + 'attemted to log in');
