@@ -46,6 +46,18 @@ app.route("/profile").get(ensureAuthenticated,(req,res)=>{
   res.render(process.cwd()+"/views/pug/profile"+{username:req.user.username})
 }) 
 
+app.route('/logout')
+  .get((req, res) => {
+    req.logout();
+    res.redirect('/');
+});
+
+app.use((req, res, next) => {
+  res.status(404)
+    .type('text')
+    .send('Not Found');
+});
+
 passport.serializeUser((user,done)=>{
   done(null,user._id)
 })
@@ -67,18 +79,6 @@ passport.use(new LocalStrategy(
     })
   }
 ))
-
-app.route('/logout')
-  .get((req, res) => {
-    req.logout();
-    res.redirect('/');
-});
-
-app.use((req, res, next) => {
-  res.status(404)
-    .type('text')
-    .send('Not Found');
-});
 
 }).catch((e)=>{
   app.route('/').get((req,res)=>{
