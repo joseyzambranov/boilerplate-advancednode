@@ -1,4 +1,5 @@
 const passport = require('passport');
+const bcrypt = require('bcrypt');
 
 module.exports = function (app, myDataBase) {
 
@@ -22,6 +23,11 @@ module.exports = function (app, myDataBase) {
             username: req.user.username
         })
     })
+
+    app.route('/logout').get((req, res) => {
+        req.logout();
+        res.redirect('/');
+    });
 
     app.route("register").post((req, res, next) => {
         const hash = bcrypt.hashSync(req.body.password, 12);
@@ -48,10 +54,17 @@ module.exports = function (app, myDataBase) {
 
         })
     })
-    app.route('/logout').get((req, res) => {
-        req.logout();
-        res.redirect('/');
-    });
+
+    passport.authenticate("local",{failureRedirect:"/"}),(req,res,next)=>{
+        res.redirect("/profile")
+      }
+      
+      app.use((req, res, next) => {
+        res.status(404)
+          .type('text')
+          .send('Not Found');
+      });
+
 
 
     function ensureAuthenticated(req,res,next){
