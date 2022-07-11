@@ -19,7 +19,7 @@ module.exports = function (app, myDataBase) {
     })
 
     app.route("/profile").get(ensureAuthenticated, (req, res) => {
-        res.render(process.cwd() + "/views/pug/profile" + {
+        res.render( "/views/pug/profile" ,{
             username: req.user.username
         })
     })
@@ -58,7 +58,7 @@ module.exports = function (app, myDataBase) {
     passport.authenticate("local",{failureRedirect:"/"}),(req,res,next)=>{
         res.redirect("/profile")
       }
-      
+
       app.use((req, res, next) => {
         res.status(404)
           .type('text')
