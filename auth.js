@@ -19,7 +19,7 @@ module.exports = function (app,myDataBase){
       passport.use(new LocalStrategy(
         function(username,password,done){
           myDataBase.findOne({username:username},function(err,user){
-            console.log('User'+ username + 'attemted to log in');
+            console.log('User '+ username + ' attemted to log in');
             if(err) {return done(err);}
             if(!user) {return done(null,false);}
             if(password !== user.password){return done(null,false);}

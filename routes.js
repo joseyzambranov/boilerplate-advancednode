@@ -19,7 +19,7 @@ module.exports = function (app, myDataBase) {
     })
 
     app.route("/profile").get(ensureAuthenticated, (req, res) => {
-        res.render( "/views/pug/profile" ,{
+        res.render( "/pug/profile" ,{
             username: req.user.username
         })
     })
