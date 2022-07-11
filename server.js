@@ -44,8 +44,7 @@ myDB(async (client) => {
   app.route('/').get((req, res) => {
     res.render('pug', {
       title: e,
-      message: "Unable login"
-    })
+      message: "Unable login"})
   })
 })
 
