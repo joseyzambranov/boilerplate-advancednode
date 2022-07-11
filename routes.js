@@ -29,7 +29,7 @@ module.exports = function (app, myDataBase) {
         res.redirect('/');
     });
 
-    app.route("register").post((req, res, next) => {
+    app.route("/register").post((req, res, next) => {
         const hash = bcrypt.hashSync(req.body.password, 12);
         myDataBase.findOne({
             username: req.body.username
@@ -43,22 +43,22 @@ module.exports = function (app, myDataBase) {
                 myDataBase.insertOne({
                     username: req.body.username,
                     password: hash
-                }), (err, doc) => {
+                }, (err, doc) => {
                     if (err) {
                         res.redirect("/")
                     } else {
                         next(null, doc.opc[0])
                     }
-                }
+                })
             }
 
         })
-    })
+    },
 
     passport.authenticate("local",{failureRedirect:"/"}),(req,res,next)=>{
         res.redirect("/profile")
       }
-
+    )
       app.use((req, res, next) => {
         res.status(404)
           .type('text')
@@ -66,12 +66,10 @@ module.exports = function (app, myDataBase) {
       });
 
 
-
-    function ensureAuthenticated(req,res,next){
-        if(req.isAuthenticated()){
-          return next()
-        }
-        res.redirect("/")
-      }
-
 }
+function ensureAuthenticated(req,res,next){
+    if(req.isAuthenticated()){
+      return next()
+    }
+    res.redirect("/")
+  }
