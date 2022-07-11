@@ -8,6 +8,7 @@ const fccTesting = require('./freeCodeCamp/fcctesting.js');
 const ObjectID = require('mongodb').ObjectID;
 const LocalStrategy = require('passport-local');
 const PORT = process.env.PORT || 3000;
+const bcrypt = require('bcrypt');
 
 const app = express();
 
