@@ -7,7 +7,7 @@ const myDB = require('./connection');
 const fccTesting = require('./freeCodeCamp/fcctesting.js');
 const PORT = process.env.PORT || 3000;
 const router = require("./routes");
-const auth = require("./auth");
+const auth = require("./auth.js");
 
 
 const app = express();
