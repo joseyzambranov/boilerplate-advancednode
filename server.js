@@ -5,7 +5,7 @@ const session = require('express-session');
 const passport = require('passport');
 const myDB = require('./connection');
 const fccTesting = require('./freeCodeCamp/fcctesting.js');
-const PORT = process.env.PORT || 3000;
+//const PORT = process.env.PORT || 3000;
 const router = require("./routes");
 const auth = require("./auth");
 
@@ -49,6 +49,6 @@ myDB(async (client) => {
   })
 })
 
-app.listen(PORT, () => {
-  console.log('Listening on port ' + PORT);
+app.listen(process.env.PORT || 3000, () => {
+  console.log('Listening on port ' + process.env.PORT);
 });
