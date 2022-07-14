@@ -2,6 +2,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const ObjectID = require('mongodb').ObjectID;
 const GitHubStrategy = require('passport-github').Strategy;
+const bcrypt = require('bcrypt');
 
 module.exports = function (app,myDataBase){
 
@@ -23,7 +24,7 @@ module.exports = function (app,myDataBase){
             console.log('User '+ username + ' attemted to log in');
             if(err) {return done(err);}
             if(!user) {return done(null,false);}
-            if(password !== user.password){return done(null,false);}
+            if(!bcrypt.compareSync(password, user.password)) {return done(null,false);}
             return done(null,user)
           })
         }
@@ -37,8 +38,9 @@ module.exports = function (app,myDataBase){
         function(accessToken, refreshToken, profile, cb) {
           console.log(profile);
           //Database logic here with callback containing our user object
-          myDataBase.findOneAndUpdate(
+          myDataBase.findAndModify(
             { id: profile.id },
+            {},
             {
               $setOnInsert: {
                 id: profile.id,
