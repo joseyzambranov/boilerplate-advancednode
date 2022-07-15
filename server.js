@@ -9,10 +9,12 @@ const routes = require('./routes');
 const auth = require('./auth.js');
 const PORT = process.env.PORT || 3000
 
+const app = express();
+
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
-const app = express();
+
 app.set('view engine', 'pug');
 
 fccTesting(app); // For fCC testing purposes
